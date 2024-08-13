@@ -1,3 +1,3 @@
 # Hello! 
-# You've reached main.  
-# Please change the branch to develop :)
+## You've reached main.  
+## Please change the branch to develop :)
