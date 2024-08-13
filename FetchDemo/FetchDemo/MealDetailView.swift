@@ -11,6 +11,7 @@ struct MealDetailView: View {
     @State private var mealDetail: MealDetail?
     private let apiService = APIService()
     let mealId: String
+    @Environment(\.presentationMode) var presentationMode
     
     var body: some View {
         ScrollView {
@@ -19,44 +20,63 @@ struct MealDetailView: View {
                     AsyncImage(url: URL(string: mealDetails.strMealThumb)) { image in
                         image
                             .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(maxWidth: .infinity)
-                            .cornerRadius(8)
+                            .scaledToFill()
+                            .frame(height: 250)
+                            .clipped()
+                            .cornerRadius(15)
+                            .shadow(radius: 10)
                     } placeholder: {
                         ProgressView()
                     }
-                        
+                    
                     
                     Text(mealDetails.strMeal)
                         .font(.largeTitle)
                         .bold()
-                        .padding(.top, 10)
+                        .padding(.top)
+                        .multilineTextAlignment(.center)
+                        .frame(maxWidth: .infinity, alignment: .center)
                     
-                    Text("Ingredients")
-                        .font(.headline)
-                        .padding(.top, 20)
-                    
-                    VStack(alignment: .leading, spacing: 8) {
+                    VStack(spacing: 8) {
+                        Text("Ingredients")
+                            .font(.title2)
+                            .bold()
+                            .padding(.bottom, 5)
+                        
+                        
                         ForEach(mealDetails.ingredients, id: \.self) { ingredient in
                             
                             Text("• \(ingredient)")
-                                .padding(.leading, 5)
+                                .font(.body)
+                                .padding(.leading, 8)
+                                .padding(.bottom, 2)
                         }
                     }
-                    .padding(.bottom, 20)
-                    
-                    Text("Instructions")
-                        .font(.headline)
-                        .padding(.top, 10)
+                    .padding()
+                    .frame(maxWidth: .infinity)
+                    .background(Color(UIColor.systemGray6))
+                    .cornerRadius(10)
+                    .shadow(radius: 5)
                     
                     VStack(alignment: .leading, spacing: 8) {
+                        Text("Instructions")
+                            .font(.title2)
+                            .bold()
+                            .padding(.bottom, 5)
+                        
                         ForEach(formatInstructions(mealDetails.strInstructions), id: \.self) { instruction in
                             
                             Text("• \(instruction)")
+                                .font(.body)
                                 .padding(.leading, 8)
+                                .padding(.bottom, 2)
                         }
                     }
-
+                    .padding()
+                    .background(Color(UIColor.systemGray6))
+                    .cornerRadius(10)
+                    .shadow(radius: 5)
+                    
                 } else {
                     Text("Loading...")
                         .task {
@@ -68,14 +88,30 @@ struct MealDetailView: View {
                         }
                 }
             }
-            .padding()
+            .padding([.leading, .trailing])
         }
+        .navigationBarBackButtonHidden(true)
+        .navigationBarItems(leading: customBackButton)
+        .background(Color(UIColor.systemGroupedBackground).edgesIgnoringSafeArea(.all))
     }
     
     private func formatInstructions(_ instructions: String) -> [String] {
         instructions.components(separatedBy: ". ")
             .map { $0.trimmingCharacters(in: .whitespacesAndNewlines)}
             .filter { !$0.isEmpty }
+    }
+    
+    private var customBackButton : some View {
+        Button(action: {
+            presentationMode.wrappedValue.dismiss()
+        }) {
+            HStack{
+                Image(systemName: "chevron.backward.circle")
+                    .foregroundColor(.purple)
+                Text("Back")
+                    .foregroundColor(.purple)
+            }
+        }
     }
 }
 

@@ -21,6 +21,7 @@ struct MainView: View {
                         EmptyView()
                     }
                     .opacity(0)
+                    
                     HStack {
                         AsyncImage(url: URL(string: meal.strMealThumb)) { image in
                             image
@@ -43,7 +44,7 @@ struct MainView: View {
                         Spacer()
                         
                         Image(systemName: "chevron.right")
-                            .foregroundColor(.gray)
+                            .foregroundColor(.purple)
                     }
                     .padding()
                     .background(
@@ -57,6 +58,7 @@ struct MainView: View {
             }
             .listStyle(PlainListStyle())
             .navigationTitle("Desserts")
+            .background(Color(UIColor.systemGroupedBackground).edgesIgnoringSafeArea(.all))
             .task {
                 do {
                     meals = try await apiService.fetchDesserts()
@@ -65,6 +67,7 @@ struct MainView: View {
                 }
             }
         }
+        .accentColor(.purple)
     }
     
 }
