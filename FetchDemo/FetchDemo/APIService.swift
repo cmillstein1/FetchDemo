@@ -22,7 +22,7 @@ class APIService {
         return mealItemList["meals"] ?? []
     }
     
-    func fetchMealDetails(id: String) async throws -> MealDetail? {
+    func fetchMealDetails(id: String) async throws -> MealDetail {
         guard let url = URL(string: mealsURL + id) else {
             throw URLError(.badURL)
         }
@@ -30,6 +30,10 @@ class APIService {
         let (data, _) = try await URLSession.shared.data(from: url)
         let mealDetailList = try JSONDecoder().decode([String: [MealDetail]].self, from: data)
         
-        return mealDetailList["meals"]?.first
+        if let details = mealDetailList["meals"]?.first {
+            return details
+        }
+        
+        throw URLError(.badURL)
     }
 }

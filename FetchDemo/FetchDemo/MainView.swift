@@ -27,7 +27,7 @@ struct MainView: View {
                         $0.strMeal < $1.strMeal
                     }) { meal in
                         ZStack {
-                            NavigationLink(destination: MealDetailView(mealId: meal.idMeal)) {
+                            NavigationLink(destination: MealDetailView(mealId: meal.id)) {
                                 EmptyView()
                             }
                             .opacity(0)
@@ -72,16 +72,20 @@ struct MainView: View {
                 }
             }
             .task {
-                do {
-                    meals = try await apiService.fetchDesserts()
-                    isLoading = false
-                } catch {
-                    print("Error fetching meals: \(error.localizedDescription)")
-                    isLoading = false
-                }
+                await fetchDesserts()
             }
         }
         .accentColor(.black)
+    }
+    
+    private func fetchDesserts() async {
+        do {
+            meals = try await apiService.fetchDesserts()
+            isLoading = false
+        } catch {
+            print("Error fetching meals: \(error.localizedDescription)")
+            isLoading = false
+        }
     }
     
 }

@@ -110,11 +110,15 @@ struct MealDetailView: View {
             .navigationBarItems(leading: customBackButton)
         }
         .task {
-            do {
-                mealDetail = try await apiService.fetchMealDetails(id: mealId)
-            } catch {
-                print("Error fetching meal details: \(error.localizedDescription)")
-            }
+            await fetchDessertDetails()
+        }
+    }
+    
+    private func fetchDessertDetails() async {
+        do {
+            mealDetail = try await apiService.fetchMealDetails(id: mealId)
+        } catch {
+            print("Error fetching meal details: \(error.localizedDescription)")
         }
     }
     
