@@ -54,7 +54,7 @@ struct MainView: View {
                                 Spacer()
                                 
                                 Image(systemName: "chevron.right")
-                                    .foregroundColor(.purple)
+                                    .foregroundColor(.black)
                             }
                             .padding()
                             .background(
