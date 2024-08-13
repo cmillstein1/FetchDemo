@@ -65,6 +65,7 @@ struct MainView: View {
                         }
                         .listRowSeparator(.hidden)
                         .listRowBackground(Color.clear)
+                        .padding(.bottom, 10)
                     }
                     .listStyle(PlainListStyle())
                     .navigationTitle("Desserts")
